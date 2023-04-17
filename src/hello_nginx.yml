@@ -12,7 +12,7 @@
         state: present
 
     - name: Create custom index.html file with current date
-      command: echo "<p><script> document.write(new Date().toLocaleDateString()); </script></p>" > /var/www/html/index.html
+      command: echo "<html><body><h1>Today is {{ lookup('pipe', 'date +%Y-%m-%d') }}</h1></body></html>" > /var/www/html/index.html
       args:
         executable: /bin/bash
 
