@@ -1,0 +1,47 @@
+---
+- name: Install Nginx web server and update default page with current date
+  hosts: web
+  become: true
+
+  tasks:
+
+    - name: Update apt cache and install nginx
+      apt:
+        update_cache: yes
+        name: nginx
+        state: present
+
+    - name: Create custom index.html file with current date
+      command: echo "<p><script> document.write(new Date().toLocaleDateString()); </script></p>" > /var/www/html/index.html
+      args:
+        executable: /bin/bash
+
+    - name: Copy custom index.html to default location
+      copy:
+        src: /var/www/html/index.html
+        dest: /usr/share/nginx/html/index.html
+
+    - name: Restart Nginx service
+      service:
+        name: nginx
+        state: restarted
+        enabled: true
+
+    - name: Ensure Nginx service is running
+      systemd:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Open Nginx HTTP port
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+    - name: Open Nginx HTTPS port
+      ufw:
+        rule: allow
+        port: '443'
+        proto: tcp
+...
