@@ -1,10 +1,10 @@
 ---
+
 - name: Install Nginx web server and update default page with current date
-  hosts: web
+  hosts: all
   become: true
 
   tasks:
-
     - name: Update apt cache and install nginx
       apt:
         update_cache: yes
@@ -44,4 +44,5 @@
         rule: allow
         port: '443'
         proto: tcp
-...
+
+---
