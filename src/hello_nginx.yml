@@ -1,6 +1,6 @@
 ---
 - name: Install Nginx web server and update default page with current date
-  hosts: web
+  hosts: all
   become: true
 
   tasks:
